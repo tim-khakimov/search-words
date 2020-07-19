@@ -15,13 +15,6 @@ object Utils {
 
     fun <T> eqNonNull(value : T) : T = Mockito.eq(value)
 
-    fun word(id : Int, vararg meanings: Meaning) : Word {
-        val word = Word()
-        word.id = id
-        word.meanings = mutableListOf<Meaning>().also { it.addAll(meanings) }
-        return word
-    }
-
     fun meaning(id : Int, text : String) : Meaning {
         val meaning = Meaning()
         meaning.id = id

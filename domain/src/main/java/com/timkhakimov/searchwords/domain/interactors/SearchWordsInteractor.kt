@@ -4,6 +4,7 @@ import com.timkhakimov.searchwords.domain.boundary.OutputBoundary
 import com.timkhakimov.searchwords.domain.boundary.ResultWrapper
 import com.timkhakimov.searchwords.domain.boundary.ResultWrapperUtils
 import com.timkhakimov.searchwords.domain.boundary.Status
+import com.timkhakimov.searchwords.domain.data.model.Meaning
 import com.timkhakimov.searchwords.domain.data.model.Word
 import com.timkhakimov.searchwords.domain.data.source.Repository
 import com.timkhakimov.searchwords.domain.data.source.Response
@@ -13,7 +14,7 @@ import com.timkhakimov.searchwords.domain.data.source.Response
  */
 class SearchWordsInteractor(
     val repository: Repository,
-    val wordsOutputBoundary: OutputBoundary<ResultWrapper<List<Word>>>
+    val wordsOutputBoundary: OutputBoundary<ResultWrapper<List<Meaning>>>
 ) {
 
     fun search(query: String) {
@@ -23,7 +24,7 @@ class SearchWordsInteractor(
         }
     }
 
-    private fun handleResponse(response: Response<List<Word>>) {
+    private fun handleResponse(response: Response<List<Meaning>>) {
         wordsOutputBoundary.sendData(ResultWrapperUtils.createResultWrapper(response))
     }
 }

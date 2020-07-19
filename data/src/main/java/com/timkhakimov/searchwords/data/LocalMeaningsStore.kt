@@ -10,13 +10,7 @@ class LocalMeaningsStore {
 
     private val meaningsMap = hashMapOf<Int, Meaning>()
 
-    fun saveWords(words: List<Word>) {
-        for (word in words) {
-            word.meanings?.let { saveMeanings(it) }
-        }
-    }
-
-    private fun saveMeanings(meanings: List<Meaning>) {
+    fun saveMeanings(meanings: List<Meaning>) {
         for (meaning in meanings) {
             meaningsMap.put(meaning.id, meaning)
         }

@@ -3,13 +3,12 @@ package com.timkhakimov.searchwords.domain.interactors
 import com.timkhakimov.searchwords.domain.boundary.OutputBoundary
 import com.timkhakimov.searchwords.domain.boundary.ResultWrapper
 import com.timkhakimov.searchwords.domain.boundary.Status
-import com.timkhakimov.searchwords.domain.data.model.Word
+import com.timkhakimov.searchwords.domain.data.model.Meaning
 import com.timkhakimov.searchwords.domain.data.source.Repository
 import com.timkhakimov.searchwords.domain.data.source.Response
 import com.timkhakimov.searchwords.domain.interactors.Utils.anyNonNull
 import com.timkhakimov.searchwords.domain.interactors.Utils.eqNonNull
 import com.timkhakimov.searchwords.domain.interactors.Utils.meaning
-import com.timkhakimov.searchwords.domain.interactors.Utils.word
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,11 +27,11 @@ class SearchWordsInteractorTest{
     @Mock
     lateinit var repository: Repository
     @Mock
-    lateinit var wordsOutputBoundary: OutputBoundary<ResultWrapper<List<Word>>>
+    lateinit var wordsOutputBoundary: OutputBoundary<ResultWrapper<List<Meaning>>>
     @get:Rule
     val mockitoRule = MockitoJUnit.rule()
     lateinit var searchWordsInteractor : SearchWordsInteractor
-    private val words = words()
+    private val meanings = meanings()
     private val throwable = Throwable("")
 
     @Before
@@ -54,7 +53,7 @@ class SearchWordsInteractorTest{
         searchWordsInteractor.search("query")
         verify(wordsOutputBoundary).sendData(eqNonNull(ResultWrapper(Status.LOADING)))
         verify(repository).searchWords(eqNonNull("query"), anyNonNull())
-        verify(wordsOutputBoundary).sendData(ResultWrapper(Status.SUCCESS, words))
+        verify(wordsOutputBoundary).sendData(ResultWrapper(Status.SUCCESS, meanings))
         verifyNoMoreInteractions(repository)
         verifyNoMoreInteractions(wordsOutputBoundary)
     }
@@ -72,21 +71,21 @@ class SearchWordsInteractorTest{
 
     private fun setUpSuccessResponse() {
         doAnswer {
-            val callback = it.arguments[1] as (Response<List<Word>>) -> Unit
-            callback.invoke(Response(words, null))
+            val callback = it.arguments[1] as (Response<List<Meaning>>) -> Unit
+            callback.invoke(Response(meanings, null))
             null
         }.`when`(repository).searchWords(anyNonNull(), anyNonNull())
     }
 
     private fun setUpErrorResponse() {
         doAnswer {
-            val callback = it.arguments[1] as (Response<List<Word>>) -> Unit
+            val callback = it.arguments[1] as (Response<List<Meaning>>) -> Unit
             callback.invoke(Response(null, throwable))
             null
         }.`when`(repository).searchWords(anyNonNull(), anyNonNull())
     }
 
-    private fun words() : List<Word> {
-        return listOf(word(1, meaning(2, "text")))
+    private fun meanings() : List<Meaning> {
+        return listOf(meaning(2, "text"))
     }
 }

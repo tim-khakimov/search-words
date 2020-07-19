@@ -2,7 +2,6 @@ package com.timkhakimov.searchwords.data
 
 import com.timkhakimov.searchwords.data.Hardcode.MEANING_NOT_FOUND
 import com.timkhakimov.searchwords.domain.data.model.Meaning
-import com.timkhakimov.searchwords.domain.data.model.Word
 import com.timkhakimov.searchwords.domain.data.source.Repository
 import com.timkhakimov.searchwords.domain.data.source.Response
 
@@ -14,10 +13,14 @@ class WordsRepository(
     private val localMeaningsStore: LocalMeaningsStore
 ) : Repository {
 
-    override fun searchWords(query: String, callback: (Response<List<Word>>) -> Unit) {
+    override fun searchWords(query: String, callback: (Response<List<Meaning>>) -> Unit) {
         remoteDataSource.searchWords(query, { words ->
-            localMeaningsStore.saveWords(words)
-            callback.invoke(Response(words, null))
+            val meanings = mutableListOf<Meaning>()
+            for (word in words) {
+                word.meanings?.let { meanings.addAll(it) }
+            }
+            localMeaningsStore.saveMeanings(meanings)
+            callback.invoke(Response(meanings, null))
         }, { callback.invoke(Response(null, it)) })
     }
 
