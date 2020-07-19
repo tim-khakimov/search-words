@@ -15,6 +15,10 @@ buildscript {
         android_test_runner_version = '1.2.0'
         espresso_version = '3.2.0'
         mockito_version = '2.23.4'
+        rx_android_version = '2.0.2'
+        rx_java_version = '2.2.9'
+        retrofit_version = '2.4.0'
+        okhttp3_version = '3.11.0'
     }
     repositories {
         google()
