@@ -7,7 +7,7 @@ import com.timkhakimov.searchwords.domain.data.model.Word
 import com.timkhakimov.searchwords.domain.data.source.Repository
 import com.timkhakimov.searchwords.domain.data.source.Response
 import com.timkhakimov.searchwords.domain.interactors.Utils.anyNonNull
-import com.timkhakimov.searchwords.domain.interactors.Utils.convert
+import com.timkhakimov.searchwords.domain.interactors.Utils.eqNonNull
 import com.timkhakimov.searchwords.domain.interactors.Utils.meaning
 import com.timkhakimov.searchwords.domain.interactors.Utils.word
 import org.junit.Before
@@ -43,17 +43,17 @@ class SearchWordsInteractorTest{
     @Test
     fun checkParameters() {
         searchWordsInteractor.search("query")
-        verify(repository).searchWords(convert("query"), anyNonNull())
+        verify(repository).searchWords(eqNonNull("query"), anyNonNull())
         searchWordsInteractor.search("other query")
-        verify(repository).searchWords(convert("other query"), anyNonNull())
+        verify(repository).searchWords(eqNonNull("other query"), anyNonNull())
     }
 
     @Test
     fun checkSuccessResult() {
         setUpSuccessResponse()
         searchWordsInteractor.search("query")
-        verify(wordsOutputBoundary).sendData(convert(ResultWrapper(Status.LOADING)))
-        verify(repository).searchWords(convert("query"), anyNonNull())
+        verify(wordsOutputBoundary).sendData(eqNonNull(ResultWrapper(Status.LOADING)))
+        verify(repository).searchWords(eqNonNull("query"), anyNonNull())
         verify(wordsOutputBoundary).sendData(ResultWrapper(Status.SUCCESS, words))
         verifyNoMoreInteractions(repository)
         verifyNoMoreInteractions(wordsOutputBoundary)
@@ -63,8 +63,8 @@ class SearchWordsInteractorTest{
     fun checkErrorResult() {
         setUpErrorResponse()
         searchWordsInteractor.search("query")
-        verify(wordsOutputBoundary).sendData(convert(ResultWrapper(Status.LOADING)))
-        verify(repository).searchWords(convert("query"), anyNonNull())
+        verify(wordsOutputBoundary).sendData(eqNonNull(ResultWrapper(Status.LOADING)))
+        verify(repository).searchWords(eqNonNull("query"), anyNonNull())
         verify(wordsOutputBoundary).sendData(ResultWrapper(Status.ERROR, null, throwable))
         verifyNoMoreInteractions(repository)
         verifyNoMoreInteractions(wordsOutputBoundary)

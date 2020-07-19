@@ -13,7 +13,7 @@ object Utils {
 
     fun <T> anyNonNull(): T = Mockito.any<T>()
 
-    fun <T> convert(value : T) : T = Mockito.eq(value)
+    fun <T> eqNonNull(value : T) : T = Mockito.eq(value)
 
     fun word(id : Int, vararg meanings: Meaning) : Word {
         val word = Word()

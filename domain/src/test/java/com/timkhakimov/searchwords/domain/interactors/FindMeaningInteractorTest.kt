@@ -4,11 +4,10 @@ import com.timkhakimov.searchwords.domain.boundary.OutputBoundary
 import com.timkhakimov.searchwords.domain.boundary.ResultWrapper
 import com.timkhakimov.searchwords.domain.boundary.Status
 import com.timkhakimov.searchwords.domain.data.model.Meaning
-import com.timkhakimov.searchwords.domain.data.model.Word
 import com.timkhakimov.searchwords.domain.data.source.Repository
 import com.timkhakimov.searchwords.domain.data.source.Response
 import com.timkhakimov.searchwords.domain.interactors.Utils.anyNonNull
-import com.timkhakimov.searchwords.domain.interactors.Utils.convert
+import com.timkhakimov.searchwords.domain.interactors.Utils.eqNonNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,19 +44,19 @@ class FindMeaningInteractorTest{
     @Test
     fun checkParameters() {
         findMeaningInteractor.findMeaning(1)
-        verify(repository).getMeaning(convert(1), anyNonNull())
+        verify(repository).getMeaning(eqNonNull(1), anyNonNull())
         findMeaningInteractor.findMeaning(2)
-        verify(repository).getMeaning(convert(2), anyNonNull())
+        verify(repository).getMeaning(eqNonNull(2), anyNonNull())
         findMeaningInteractor.findMeaning(0)
-        verify(repository).getMeaning(convert(0), anyNonNull())
+        verify(repository).getMeaning(eqNonNull(0), anyNonNull())
     }
 
     @Test
     fun checkSuccessResult() {
         setUpSuccessResponse()
         findMeaningInteractor.findMeaning(1)
-        verify(meaningOutputBoundary).sendData(convert(ResultWrapper(Status.LOADING)))
-        verify(repository).getMeaning(convert(1), anyNonNull())
+        verify(meaningOutputBoundary).sendData(eqNonNull(ResultWrapper(Status.LOADING)))
+        verify(repository).getMeaning(eqNonNull(1), anyNonNull())
         verify(meaningOutputBoundary).sendData(ResultWrapper(Status.SUCCESS, meaning))
         verifyNoMoreInteractions(repository)
         verifyNoMoreInteractions(meaningOutputBoundary)
@@ -67,8 +66,8 @@ class FindMeaningInteractorTest{
     fun checkErrorResult() {
         setUpErrorResponse()
         findMeaningInteractor.findMeaning(1)
-        verify(meaningOutputBoundary).sendData(convert(ResultWrapper(Status.LOADING)))
-        verify(repository).getMeaning(convert(1), anyNonNull())
+        verify(meaningOutputBoundary).sendData(eqNonNull(ResultWrapper(Status.LOADING)))
+        verify(repository).getMeaning(eqNonNull(1), anyNonNull())
         verify(meaningOutputBoundary).sendData(ResultWrapper(Status.ERROR, null, throwable))
         verifyNoMoreInteractions(repository)
         verifyNoMoreInteractions(meaningOutputBoundary)
