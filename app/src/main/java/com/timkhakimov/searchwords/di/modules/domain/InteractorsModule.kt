@@ -2,10 +2,11 @@ package com.timkhakimov.searchwords.di.modules.domain
 
 import com.timkhakimov.searchwords.di.modules.ContainersModule
 import com.timkhakimov.searchwords.di.modules.data.DataModule
-import com.timkhakimov.searchwords.di.modules.data.NetworkModule
 import com.timkhakimov.searchwords.domain.data.source.Repository
+import com.timkhakimov.searchwords.domain.interactors.FindMeaningInteractor
 import com.timkhakimov.searchwords.domain.interactors.SearchWordsInteractor
 import com.timkhakimov.searchwords.presentation.containers.FoundMeaningsContainer
+import com.timkhakimov.searchwords.presentation.containers.MeaningContainer
 import dagger.Module
 import dagger.Provides
 
@@ -18,5 +19,10 @@ class InteractorsModule {
     @Provides
     fun provideSearchWordsInteractor(repository: Repository, foundMeaningsContainer: FoundMeaningsContainer) : SearchWordsInteractor {
         return SearchWordsInteractor(repository, foundMeaningsContainer)
+    }
+
+    @Provides
+    fun provideFindMeaningInteractor(repository: Repository, meaningContainer: MeaningContainer) : FindMeaningInteractor {
+        return FindMeaningInteractor(repository, meaningContainer)
     }
 }

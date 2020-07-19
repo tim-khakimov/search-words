@@ -6,4 +6,4 @@ import com.timkhakimov.searchwords.domain.data.model.Meaning
 /**
  * Created by Timur Khakimov on 19.07.2020
  */
-class FoundMeaningsContainer: BaseContainer<ResultWrapper<List<Meaning>>>()
+class MeaningContainer: BaseContainer<ResultWrapper<Meaning>>()

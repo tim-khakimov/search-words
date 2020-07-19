@@ -1,5 +1,6 @@
 package com.timkhakimov.searchwords.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -60,7 +61,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openMeaning(meaning: Meaning) {
-
+        val intent = Intent(this, MeaningActivity::class.java)
+        intent.putExtra(MeaningActivity.ARG_WORD, etQuery.text.toString())
+            .putExtra(MeaningActivity.ARG_MEANING_ID, meaning.id)
+        startActivity(intent)
     }
 
     private class MeaningsAdapter : RecyclerView.Adapter<TextMeaningHolder>() {
